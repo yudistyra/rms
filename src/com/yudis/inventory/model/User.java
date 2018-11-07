@@ -6,13 +6,15 @@ public class User {
 	private String password;
 	private String fullname;
 	private String email;
-	
+	private boolean active;
+
 	public User(String username, String password, String fullname, String email) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.fullname = fullname;
 		this.email = email;
+		this.active = true;
 	}
 
 	public User(int id, String username, String fullname, String email) {
@@ -21,6 +23,7 @@ public class User {
 		this.username = username;
 		this.fullname = fullname;
 		this.email = email;
+		this.active = true;
 	}
 	
 	public int getId() {
@@ -29,6 +32,7 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -53,5 +57,12 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }

@@ -62,6 +62,43 @@ public class UserDaoImpl implements UserDao {
 		return users;
 	}
 	
+	public User login(String username, String password) {
+		User user = null;
+        String sql = "select * from user where username = ?";
+        ResultSet rs = null;
+        
+		try (
+				Connection conn = dataSource.getConnection();
+				PreparedStatement st = conn.prepareStatement(sql);
+				) {
+			st.setString(1, username);
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String uname = rs.getString("username");
+				String pwd = rs.getString("password");
+				String fname = rs.getString("fullname");
+				String email = rs.getString("email");
+
+				if(pwd.equals(password)) {
+					user = new User(id, uname, fname, email);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL Error " + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return user;
+	}
+	
 	public User getById(int id) {
 		// TODO Auto-generated method stub
 		return null;

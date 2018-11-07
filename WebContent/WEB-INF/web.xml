@@ -4,9 +4,7 @@
     <session-timeout>30</session-timeout>
   </session-config>
   <display-name>Inventory App</display-name>
-  
   <welcome-file-list>
-    <welcome-file>UserController</welcome-file>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
