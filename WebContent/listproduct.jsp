@@ -56,7 +56,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><%=session.getAttribute("fullname") %></span>
+              <span class="hidden-xs"><%=session.getAttribute("username") %></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -94,7 +94,7 @@
           </a>
         </li>
         <li class="active treeview">
-        	<a href="https://adminlte.io/docs"><i class="fa fa-cubes"></i> <span>Products</span></a>
+        	<a href="ProductController"><i class="fa fa-cubes"></i> <span>Products</span></a>
         </li>
       </ul>
     </section>
@@ -131,15 +131,39 @@
                   <th>Name</th>
                   <th>Description</th>
                   <th>Price</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 	<c:forEach var="product" items="${PRODUCT_LIST}">
+                		<c:url var="updateLink" value="UpdateProductController">
+                            <c:param name="productId" value="${product.id}" />
+                        </c:url>
+                        <c:url var="deleteLink" value="DeleteProductController">
+                            <c:param name="productId" value="${product.id}" />
+                        </c:url>
                         <tr>
                             <td>${product.id}</td>
                             <td>${product.name}</td>
                             <td>${product.description}</td>
                             <td>${product.price}</td>
+                            <td>
+                            	<c:choose>
+			                        <c:when test="${product.active}">
+			                            <span class="label label-success">Active</span>
+			                        </c:when>
+			                            <c:otherwise>
+			                                <span class="label label-danger">Inactive</span>
+			                            </c:otherwise>
+			                    </c:choose>
+                            </td>
+                            <td>
+                                <a href="${updateLink}" role="button" class="btn btn-sm btn-warning" title="Update Product"><i class="fa fa-pencil"></i></a>&nbsp;
+                                <a href="${deleteLink}" role="button" class="btn btn-sm btn-danger" title="Delete Product" onclick="if (!confirm('Are you sure want to delete this product?')) return false;">
+                                	<i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>

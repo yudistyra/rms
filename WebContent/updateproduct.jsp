@@ -1,3 +1,4 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,12 +85,12 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
+        <li>
           <a href="DashboardController">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li><a href="ProductController"><i class="fa fa-cubes"></i> <span>Products</span></a></li>
+        <li class="active treeview"><a href="ProductController"><i class="fa fa-cubes"></i> <span>Products</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -104,8 +105,9 @@
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li><a href="DashboardController"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="ProductController"><i class="fa fa-cubes"></i> Master Product</a></li>
+        <li class="active">Update Product</li>
       </ol>
     </section>
 
@@ -113,36 +115,52 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>${PRODUCT}</h3>
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3>Update Product</h3>
+            </div>
+            <!-- /.box-header -->
+             <!-- form start -->
+            <form role="form" action="UpdateProductController" method="post">
+          		<input type="hidden" name="id" value="${PRODUCT.id}">  	
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" placeholder="Product Name" name="name" value="${PRODUCT.name}">
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input type="text" class="form-control" id="description" placeholder="Product Description" name="description" value="${PRODUCT.description}">
+                </div>
+                <div class="form-group">
+                  <label for="price">Price</label>
+                  <input type="text" class="form-control" id="price" placeholder="Product Price" name="price" value="${PRODUCT.price}">
+                </div>
+                <div class="form-check">
+                	<c:choose>
+                        <c:when test="${PRODUCT.active}">
+                            <input type="checkbox" class="form-check-input" id="active" name="active" checked>
+                        </c:when>
+                            
+                            <c:otherwise>
+                                <input type="checkbox" class="form-check-input" id="active" name="active">
+                            </c:otherwise>
+                    </c:choose>
+				    <label class="form-check-label" for="active">Active</label>
+				</div>
+              </div>
+              <!-- /.box-body -->
 
-              <p>Products</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+                <a href="ProductController" role="button" class="btn btn-danger"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</a>
+              </div>
+            </form>
           </div>
+          <!-- /.box -->
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>${USERS}</h3>
-
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
+        <!-- /.col -->
       </div>
       <!-- /.row -->
     </section>

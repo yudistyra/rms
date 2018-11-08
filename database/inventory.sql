@@ -24,13 +24,10 @@ CREATE TABLE IF NOT EXISTS `product` (
   `price` int(11) DEFAULT '0',
   `active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table inventory.product: ~0 rows (approximately)
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` (`id`, `name`, `description`, `price`, `active`) VALUES
-	(1, 'indomie', 'mie goreng', 2500, 1),
-	(2, 'sabun', 'lifeboy', 3000, 1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 
 -- Dumping structure for table inventory.user
@@ -47,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table inventory.user: ~1 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `username`, `password`, `fullname`, `email`, `active`) VALUES
-	(1, 'yudis', '123456', 'yudistyra', 'yudis@aku.com', 1);
+	(1, 'admin', '123456', 'administrator', 'admin@webinventory.com', 1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

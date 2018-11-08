@@ -52,15 +52,14 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><%=session.getAttribute("fullname") %></span>
+              <span class="hidden-xs"><%=session.getAttribute("username") %></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
                 <img src="assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 	<p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  <%=session.getAttribute("fullname") %>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -85,12 +84,12 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
+        <li>
           <a href="DashboardController">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li><a href="ProductController"><i class="fa fa-cubes"></i> <span>Products</span></a></li>
+        <li class="active treeview"><a href="ProductController"><i class="fa fa-cubes"></i> <span>Products</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -122,7 +121,7 @@
             </div>
             <!-- /.box-header -->
              <!-- form start -->
-            <form role="form">
+            <form role="form" action="CreateProductController" method="post">
               <div class="box-body">
                 <div class="form-group">
                   <label for="name">Name</label>
@@ -141,6 +140,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
+                <a href="ProductController" role="button" class="btn btn-danger"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</a>
               </div>
             </form>
           </div>

@@ -23,8 +23,20 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void create(Product product) {
-		// TODO Auto-generated method stub
-
+		String sql = "insert into product (name,description,price) values (?,?,?)";
+        
+        try(
+                Connection conn = dataSource.getConnection();
+                PreparedStatement p = conn.prepareStatement(sql);
+                ) {
+            p.setString(1, product.getName());
+            p.setString(2, product.getDescription());
+            p.setInt(3, product.getPrice());
+            
+            p.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Error " + e.getMessage());
+        }
 	}
 
 	@Override
@@ -93,14 +105,42 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public void update(Product product) {
-		// TODO Auto-generated method stub
+		 String sql = "UPDATE product SET name = ?, description = ?, price = ?, active = ? WHERE id = ?";
+	        
+		 try(
+				 Connection conn = dataSource.getConnection();
+				 PreparedStatement p = conn.prepareStatement(sql);
+				 ) {
+			 p.setString(1, product.getName());
+			 p.setString(2, product.getDescription());
+			 p.setInt(3, product.getPrice());
+			 if(product.isActive())
+				 p.setInt(4, 1);
+			 else
+				 p.setInt(4, 0);
+			 p.setInt(5, product.getId());
+
+			 p.executeUpdate();
+		 } catch (SQLException e) {
+			 System.out.println("SQL Error " + e.getMessage());
+		 }
 
 	}
 
 	@Override
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-
+		String sql = "DELETE FROM product WHERE id = ?";
+        
+        try(
+                Connection conn = dataSource.getConnection();
+                PreparedStatement p = conn.prepareStatement(sql);
+                ) {
+            p.setInt(1, id);
+            
+            p.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQL Error " + e.getMessage());
+        }
 	}
 
 }
