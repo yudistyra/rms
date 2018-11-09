@@ -15,6 +15,7 @@ import com.yudis.inventory.model.Product;
 public class ProductDaoImpl implements ProductDao {
 	
 	private DataSource dataSource;
+	private int result = 0;
 	
 	public ProductDaoImpl(DataSource dataSource) {
 		super();
@@ -22,7 +23,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void create(Product product) {
+	public int create(Product product) {
 		String sql = "insert into product (name,description,price) values (?,?,?)";
         
         try(
@@ -33,10 +34,12 @@ public class ProductDaoImpl implements ProductDao {
             p.setString(2, product.getDescription());
             p.setInt(3, product.getPrice());
             
-            p.executeUpdate();
+            result =  p.executeUpdate();
         } catch (SQLException e) {
             System.out.println("SQL Error " + e.getMessage());
         }
+        
+        return result;
 	}
 
 	@Override
@@ -104,7 +107,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void update(Product product) {
+	public int update(Product product) {
 		 String sql = "UPDATE product SET name = ?, description = ?, price = ?, active = ? WHERE id = ?";
 	        
 		 try(
@@ -120,15 +123,16 @@ public class ProductDaoImpl implements ProductDao {
 				 p.setInt(4, 0);
 			 p.setInt(5, product.getId());
 
-			 p.executeUpdate();
+			 result = p.executeUpdate();
 		 } catch (SQLException e) {
 			 System.out.println("SQL Error " + e.getMessage());
 		 }
 
+		 return result;
 	}
 
 	@Override
-	public void delete(int id) {
+	public int delete(int id) {
 		String sql = "DELETE FROM product WHERE id = ?";
         
         try(
@@ -137,10 +141,12 @@ public class ProductDaoImpl implements ProductDao {
                 ) {
             p.setInt(1, id);
             
-            p.executeUpdate();
+            result = p.executeUpdate();
         } catch (SQLException e) {
             System.out.println("SQL Error " + e.getMessage());
         }
+        
+        return result;
 	}
 
 }

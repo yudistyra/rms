@@ -33,34 +33,44 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in</p>
-	<c:choose>
+    <p class="login-box-msg">Register</p>
+    <c:choose>
         <c:when test="${ALERT}">
-            <div class="${ALERT_CLASS}">
-  				<strong>Message: </strong> ${MESSAGE}
+            <div class="alert alert-danger">
+  				<strong>Error!</strong> ${MESSAGE}
 			</div>
         </c:when>
     </c:choose>
-    <form action="LoginController" method="post">
+	
+    <form action="RegisterController" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="Username" name="username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="Fullname" name="fullname">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" placeholder="Email" name="email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
         <input type="password" class="form-control" placeholder="Password" name="password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="Retype Password" name="confirmpassword">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
         </div>
         <!-- /.col -->
       </div>
     </form>
-    
-    </br>
-    <a href="register.jsp" class="text-center">Register a new membership</a>
 
   </div>
   <!-- /.login-box-body -->

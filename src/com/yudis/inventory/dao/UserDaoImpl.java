@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public void create(User user) {
-		String sql = "insert into user (first_name,last_name,email) values (?,?,?)";
+		String sql = "insert into user (username,password,fullname,email) values (?,?,?,?)";
 
 		try (
 				Connection conn = dataSource.getConnection(); 

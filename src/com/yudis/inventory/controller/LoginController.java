@@ -101,21 +101,11 @@ public class LoginController extends HttpServlet {
 			disp.forward(req, resp);
 		}
 		else {
-			try (PrintWriter out = resp.getWriter() ) {
-	            out.println("<!DOCTYPE html>");
-	            out.println("<html>");
-	            out.println("<head>");
-	            out.println("<title>Servlet TestServlet</title>");            
-	            out.println("</head>");
-	            out.println("<body>");
-	            
-	            out.println("Not registred user");
-	            out.println("</body>");
-	            out.println("</html>");
-	        }
-	        catch ( Exception e) {
-	            e.printStackTrace();
-	        }
+			req.setAttribute("ALERT", true);
+			req.setAttribute("ALERT_CLASS", "alert alert-danger");
+			req.setAttribute("MESSAGE", "User not Found. Please register first!!");
+			RequestDispatcher disp = req.getRequestDispatcher("/index.jsp");
+			disp.forward(req, resp);
 		}
 		
 	}

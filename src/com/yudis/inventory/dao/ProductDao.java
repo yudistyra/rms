@@ -5,9 +5,9 @@ import java.util.List;
 import com.yudis.inventory.model.Product;
 
 public interface ProductDao {
-	void create(Product product);
+	int create(Product product);
 	Product get(int id);
 	List<Product> getAll();
-	void update(Product product);
-	void delete(int id);
+	int update(Product product);
+	int delete(int id);
 }
