@@ -124,6 +124,14 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+            	<c:choose>
+			        <c:when test="${ALERT}">
+			            <div class="${ALERT_CLASS}">
+			            	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			  				<strong>Message: </strong> ${MESSAGE}
+						</div>
+			        </c:when>
+			    </c:choose>
               <table id="example1" class="table table-bordered table-hover">
                 <thead>
                 <tr>

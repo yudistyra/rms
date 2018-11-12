@@ -9,11 +9,9 @@ public class Product {
 	
 	
 	public Product() {
-		super();
 	}
 
 	public Product(int id, String name, String description, int price, boolean active) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;

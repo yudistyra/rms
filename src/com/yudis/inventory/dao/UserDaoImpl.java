@@ -7,22 +7,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
 
 import com.yudis.inventory.model.User;
+import com.yudis.inventory.util.ConnectionPool;
 
 public class UserDaoImpl implements UserDao {
 
+	private ConnectionPool connection;
 	private DataSource dataSource;
+	private static UserDaoImpl instance;
 
-	public UserDaoImpl(DataSource dataSource) {
-		this.dataSource = dataSource;
+	private UserDaoImpl() {
+		try {
+			connection = ConnectionPool.getInstance();
+			dataSource = connection.getConnection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static UserDaoImpl getInstance() {
+		if(instance == null){
+            instance = new UserDaoImpl();
+        }
+        return instance;
 	}
 
-	public void create(User user) {
+	public int create(User user) {
 		String sql = "insert into user (username,password,fullname,email) values (?,?,?,?)";
-
+		int result = 0;
+		
 		try (
 				Connection conn = dataSource.getConnection(); 
 				PreparedStatement p = conn.prepareStatement(sql);
@@ -32,10 +47,12 @@ public class UserDaoImpl implements UserDao {
 			p.setString(3, user.getFullname());
 			p.setString(4, user.getEmail());
 
-			p.executeUpdate();
+			result = p.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL Error " + e.getMessage());
 		}
+		
+		return result;
 	}
 
 	public List<User> getAll() {
@@ -48,10 +65,11 @@ public class UserDaoImpl implements UserDao {
 			while(rs.next()) {
 				int id = rs.getInt("id");
 				String username = rs.getString("username");
+				String password = rs.getString("password");
 				String fullname = rs.getString("fullname");
 				String email = rs.getString("email");
 				
-				User list = new User(id, username, fullname, email);
+				User list = new User(id, username, password, fullname, email);
 				
 				users.add(list);
 			}
@@ -62,16 +80,16 @@ public class UserDaoImpl implements UserDao {
 		return users;
 	}
 	
-	public User login(String username, String password) {
-		User user = null;
-        String sql = "select * from user where username = ?";
+	public User getById(int userId) {
+		String sql = "select * from user where id = ?";
         ResultSet rs = null;
+        User user = null;
         
 		try (
 				Connection conn = dataSource.getConnection();
 				PreparedStatement st = conn.prepareStatement(sql);
 				) {
-			st.setString(1, username);
+			st.setInt(1, userId);
 			rs = st.executeQuery();
 
 			while (rs.next()) {
@@ -81,8 +99,13 @@ public class UserDaoImpl implements UserDao {
 				String fname = rs.getString("fullname");
 				String email = rs.getString("email");
 
-				if(pwd.equals(password)) {
-					user = new User(id, uname, fname, email);
+				user = new User(id, uname, pwd, fname, email);
+				
+				if(rs.getInt("active") == 1) {
+					user.setActive(true);
+				}
+				else {
+					user.setActive(false);
 				}
 			}
 		} catch (SQLException e) {
@@ -98,25 +121,58 @@ public class UserDaoImpl implements UserDao {
 
 		return user;
 	}
-	
-	public User getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public User getByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select * from user where username = ?";
+        ResultSet rs = null;
+        User user = null;
+        
+		try (
+				Connection conn = dataSource.getConnection();
+				PreparedStatement st = conn.prepareStatement(sql);
+				) {
+			st.setString(1, username);
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String uname = rs.getString("username");
+				String pwd = rs.getString("password");
+				String fname = rs.getString("fullname");
+				String email = rs.getString("email");
+
+				user = new User(id, uname, pwd, fname, email);
+				
+				if(rs.getInt("active") == 1) {
+					user.setActive(true);
+				}
+				else {
+					user.setActive(false);
+				}
+					
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL Error " + e.getMessage());
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return user;
 	}
 
-	public void update(int id, User user) {
+	public int update(int id, User user) {
 		// TODO Auto-generated method stub
-
+		return 0;
 	}
 
-	public void delete(int id) {
+	public int delete(int id) {
 		// TODO Auto-generated method stub
-
+		return 0;
 	}
 
 }

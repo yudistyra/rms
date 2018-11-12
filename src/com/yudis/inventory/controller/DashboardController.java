@@ -2,14 +2,12 @@ package com.yudis.inventory.controller;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import com.yudis.inventory.dao.ProductDaoImpl;
 import com.yudis.inventory.dao.UserDaoImpl;
@@ -22,9 +20,6 @@ public class DashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDaoImpl userModel;
 	private ProductDaoImpl productModel;
-
-	@Resource(name = "jdbc/inventory")
-	private DataSource dataSource;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,8 +33,8 @@ public class DashboardController extends HttpServlet {
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
-		userModel = new UserDaoImpl(dataSource);
-		productModel = new ProductDaoImpl(dataSource);
+		userModel = UserDaoImpl.getInstance();
+		productModel = ProductDaoImpl.getInstance();
 	}
 
 	/**
@@ -60,8 +55,10 @@ public class DashboardController extends HttpServlet {
 				RequestDispatcher disp = request.getRequestDispatcher("/dashboard.jsp");
 				disp.forward(request, response);
 			}
-		} catch (Exception e) {
-			response.sendRedirect("index.jsp");
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

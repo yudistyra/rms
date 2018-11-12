@@ -9,7 +9,6 @@ public class User {
 	private boolean active;
 
 	public User(String username, String password, String fullname, String email) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.fullname = fullname;
@@ -17,10 +16,10 @@ public class User {
 		this.active = true;
 	}
 
-	public User(int id, String username, String fullname, String email) {
-		super();
+	public User(int id, String username, String password, String fullname, String email) {
 		this.id = id;
 		this.username = username;
+		this.password = password;
 		this.fullname = fullname;
 		this.email = email;
 		this.active = true;
@@ -29,6 +28,7 @@ public class User {
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}

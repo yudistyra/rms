@@ -1,11 +1,10 @@
 package com.yudis.inventory.dao;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.yudis.inventory.model.Product;
@@ -14,12 +13,9 @@ public class ProductDaoImplTest {
 
 	private int result;
 	
-	@Resource(name = "jdbc/inventory")
-	private DataSource dataSource;
-	
 	@Test
 	public void createShouldCreateAProduct() {
-		ProductDaoImpl dao = new ProductDaoImpl(dataSource);
+		ProductDaoImpl dao = ProductDaoImpl.getInstance();
 		Product product = new Product();
 		
 		product.setName("Iphone");
@@ -29,7 +25,7 @@ public class ProductDaoImplTest {
 		result = dao.create(product);
 		
 		assertNotNull(result);
-		Assert.assertNotEquals(0, result);
+		assertNotEquals(0, result);
 	}
 
 }

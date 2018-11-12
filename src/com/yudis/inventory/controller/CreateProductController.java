@@ -1,11 +1,7 @@
 package com.yudis.inventory.controller;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.IOException; 
 
-import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,10 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
-import com.yudis.inventory.dao.ProductDaoImpl;
-import com.yudis.inventory.model.Product;
+import com.yudis.inventory.service.ProductServices;
 
 /**
  * Servlet implementation class CreateProductController
@@ -24,24 +18,13 @@ import com.yudis.inventory.model.Product;
 @WebServlet("/CreateProductController")
 public class CreateProductController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private ProductDaoImpl productModel;
-    
-    @Resource(name = "jdbc/inventory")
-    private DataSource dataSource;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CreateProductController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
+    private ProductServices productService;
 
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
-		productModel = new ProductDaoImpl(dataSource);
+		productService = new ProductServices();
 	}
 
 
@@ -49,20 +32,14 @@ public class CreateProductController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			HttpSession session = request.getSession(false);
-			int is_login = (int) session.getAttribute("is_login");
-			String username = (String) session.getAttribute("username");
-			
-			if(is_login != 1)
-				response.sendRedirect("index.jsp");
-			else {
-				RequestDispatcher disp = request.getRequestDispatcher("/createproduct.jsp");
-				disp.forward(request, response);
-			}
-			
-		} catch (Exception e) {
+		HttpSession session = request.getSession(false);
+		int is_login = (int) session.getAttribute("is_login");
+		
+		if(is_login != 1)
 			response.sendRedirect("index.jsp");
+		else {
+			RequestDispatcher disp = request.getRequestDispatcher("/createproduct.jsp");
+			disp.forward(request, response);
 		}
 	}
 
@@ -70,15 +47,28 @@ public class CreateProductController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Product newproduct = new Product();
+		String name = request.getParameter("name");
+		String desc = request.getParameter("description");
+		int price = Integer.parseInt(request.getParameter("price"));
 		
-		newproduct.setName(request.getParameter("name"));
-		newproduct.setDescription(request.getParameter("description"));
-		newproduct.setPrice(Integer.parseInt(request.getParameter("price")));
+		String result = productService.create(name, desc, price);
 		
-		productModel.create(newproduct);
-		
-		response.sendRedirect("ProductController");
+		if(result.equalsIgnoreCase("success")) {
+			request.setAttribute("ALERT", true);
+			request.setAttribute("ALERT_CLASS", "alert alert-success alert-dismissible");
+			request.setAttribute("MESSAGE", "Product has been added");
+			request.setAttribute("PRODUCT_LIST", productService.getAll());
+			RequestDispatcher disp = request.getRequestDispatcher("/listproduct.jsp");
+			disp.forward(request, response);
+		}
+		else {
+			request.setAttribute("ALERT", true);
+			request.setAttribute("ALERT_CLASS", "alert alert-danger alert-dismissible");
+			request.setAttribute("MESSAGE", "Failed to add product");
+			request.setAttribute("PRODUCT_LIST", productService.getAll());
+			RequestDispatcher disp = request.getRequestDispatcher("/listproduct.jsp");
+			disp.forward(request, response);
+		}
 	}
 
 	

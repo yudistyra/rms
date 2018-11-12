@@ -11,17 +11,33 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.yudis.inventory.model.Product;
+import com.yudis.inventory.util.ConnectionPool;
 
 public class ProductDaoImpl implements ProductDao {
 	
+	private ConnectionPool connection;
 	private DataSource dataSource;
 	private int result = 0;
 	
-	public ProductDaoImpl(DataSource dataSource) {
-		super();
-		this.dataSource = dataSource;
+	private static ProductDaoImpl instance;
+	
+	private ProductDaoImpl() {
+		try {
+			connection = ConnectionPool.getInstance();
+			dataSource = connection.getConnection();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
+	public static ProductDaoImpl getInstance() {
+		if(instance == null) {
+			instance = new ProductDaoImpl();
+		}
+		
+		return instance;
+	}
+	
 	@Override
 	public int create(Product product) {
 		String sql = "insert into product (name,description,price) values (?,?,?)";
