@@ -10,7 +10,7 @@ This project built and tested in the following environment:
 To run this project:
 - Create a new MySQL schema named inventory
 - import sql file from database folder to your local database server
-- Configure the database connection accordingly in `/WebContent/META-INF/context.xml`
+- Configure the database connection accordingly in `/src/com/yudis/inventory/util/ConnectionPool.java`
 - Start your tomcat server
 - The application will be available at `http://localhot:8080/webinventory`
 - The initial username and password combination for login would be `admin` and `123456` 
