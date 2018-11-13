@@ -8,13 +8,26 @@ import com.yudis.inventory.model.Product;
 public class ProductServices {
 	
 	private ProductDaoImpl productModel;
+	private static ProductServices instance;
 	
-	public ProductServices() {
+	private ProductServices() {
 		productModel = ProductDaoImpl.getInstance();
+	}
+	
+	public static ProductServices getInstance() {
+		if(instance == null) {
+			instance = new ProductServices();
+		}
+		
+		return instance;
 	}
 
 	public List<Product> getAll() {
 		return productModel.getAll();
+	}
+
+	public int countAll() {
+		return productModel.getAll().size();
 	}
 	
 	public Product get(int id) {

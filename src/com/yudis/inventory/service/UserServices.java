@@ -7,9 +7,18 @@ import com.yudis.inventory.model.User;
 
 public class UserServices {
 	private UserDaoImpl userModel;
+	private static UserServices instance;
 
-	public UserServices() {
+	private UserServices() {
 		this.userModel = UserDaoImpl.getInstance();
+	}
+	
+	public static UserServices getInstance() {
+		if(instance == null) {
+			instance = new UserServices();
+		}
+		
+		return instance;
 	}
 	
 	public User login(String username, String password) {

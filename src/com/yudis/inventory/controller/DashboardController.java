@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yudis.inventory.dao.ProductDaoImpl;
 import com.yudis.inventory.dao.UserDaoImpl;
+import com.yudis.inventory.service.ProductServices;
+import com.yudis.inventory.service.UserServices;
 
 /**
  * Servlet implementation class DashboardController
@@ -18,8 +20,8 @@ import com.yudis.inventory.dao.UserDaoImpl;
 @WebServlet("/DashboardController")
 public class DashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserDaoImpl userModel;
-	private ProductDaoImpl productModel;
+	private UserServices userServices;
+	private ProductServices productServices;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -33,8 +35,8 @@ public class DashboardController extends HttpServlet {
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
-		userModel = UserDaoImpl.getInstance();
-		productModel = ProductDaoImpl.getInstance();
+		userServices = UserServices.getInstance();
+		productServices = ProductServices.getInstance();
 	}
 
 	/**
@@ -47,8 +49,8 @@ public class DashboardController extends HttpServlet {
 			if(is_login != 1)
 				response.sendRedirect("index.jsp");
 			else {
-				int countProduct = productModel.getAll().size();
-				int countUser = userModel.getAll().size();
+				int countProduct = productServices.countAll();
+				int countUser = userServices.getCountUser();
 				
 				request.setAttribute("PRODUCT", countProduct);
 				request.setAttribute("USERS", countUser);
@@ -62,4 +64,11 @@ public class DashboardController extends HttpServlet {
 		}
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(req, resp);
+	}
+
+	
 }

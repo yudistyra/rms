@@ -1,6 +1,6 @@
 package com.yudis.inventory.controller;
 
-import java.io.IOException; 
+import java.io.IOException;  
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.yudis.inventory.dao.ProductDaoImpl;
 import com.yudis.inventory.model.User;
 import com.yudis.inventory.service.UserServices;
 
@@ -21,7 +20,6 @@ import com.yudis.inventory.service.UserServices;
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserServices userService;
-	private ProductDaoImpl productModel;
 
 	/**
 	 * @throws ServletException
@@ -34,8 +32,7 @@ public class LoginController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		userService = new UserServices();
-		productModel = ProductDaoImpl.getInstance();
+		userService = UserServices.getInstance();
 	}
 
 
@@ -51,12 +48,7 @@ public class LoginController extends HttpServlet {
 		if(is_login != 1)
 			response.sendRedirect("index.jsp");
 		else {
-			int countProduct = productModel.getAll().size();
-			int countUser = userService.getCountUser();
-			
-			request.setAttribute("PRODUCT", countProduct);
-			request.setAttribute("USERS", countUser);
-			RequestDispatcher disp = request.getRequestDispatcher("/dashboard.jsp");
+			RequestDispatcher disp = request.getRequestDispatcher("DashboardController");
 			disp.forward(request, response);
 		}
 	}
@@ -76,12 +68,7 @@ public class LoginController extends HttpServlet {
 				session.setAttribute("email",user.getEmail());
 				session.setAttribute("is_login",1);
 				
-				int countProduct = productModel.getAll().size();
-				int countUser = userService.getCountUser();
-				
-				req.setAttribute("PRODUCT", countProduct);
-				req.setAttribute("USERS", countUser);
-				RequestDispatcher disp = req.getRequestDispatcher("/dashboard.jsp");
+				RequestDispatcher disp = req.getRequestDispatcher("DashboardController");
 				disp.forward(req, resp);
 			}
 			else {

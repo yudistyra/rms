@@ -24,7 +24,7 @@ public class ProductController extends HttpServlet {
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
-		productService = new ProductServices();
+		productService = ProductServices.getInstance();
 	}
 
 

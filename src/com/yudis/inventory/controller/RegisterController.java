@@ -29,7 +29,7 @@ public class RegisterController extends HttpServlet {
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
-		userService = new UserServices();
+		userService = UserServices.getInstance();
 	}
 
 
